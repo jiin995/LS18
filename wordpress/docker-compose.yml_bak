@@ -1,0 +1,38 @@
+version: '2'
+
+services:
+   db:
+     image: mysql:5.7
+     volumes:
+       - dbdata:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: i93dd3342248
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: myword
+       MYSQL_PASS: mypass
+
+   wordpress:
+     depends_on:
+       - db
+     image: wordpress:latest
+     ports:
+       - "8000:80"
+     restart: always
+     volumes:
+       - wordpress-data:/var/www/html
+       - apache-available:/etc/apache2/sites-available
+       - apache-enabled:/etc/apache2/sites-enabled
+       - apache-ssl:/etc/apache2/ssl
+     environment:
+       WORDPRESS_DB_HOST: db:3306
+       WORDPRESS_DB_USER: myword
+       WORDPRESS_DB_PASS: mypass
+
+
+volumes:
+    dbdata:
+    wordpress-data:
+    apache-available:
+    apache-enabled:
+    apache-ssl:
