@@ -28,6 +28,11 @@ sed -i -e "s/MYSQL_ROOT_PASSWORD: somewordpress/MYSQL_ROOT_PASSWORD: $DB_NEW_PAS
 sed -i -e "s/WORDPRESS_DB_USER: wordpress/WORDPRESS_DB_USER: $DB_WP_USER/" docker-compose.yml
 sed -i -e "s/WORDPRESS_DB_PASSWORD: wordpress/WORDPRESS_DB_PASSWORD: $DB_WP_PASS/" docker-compose.yml
 
+cp -dr /etc/apache2/ssl/ mywordpress/
+cp -dr /etc/apache2/sites-available/ mywordpress/
+cp -dr /etc/apache2/sites-enabled/  mywordpress/
+
+docker-compose build
 docker-compose up -d
 sleep 45
 #preparo il container per il restore del dump e faccio il restore
@@ -35,9 +40,11 @@ docker cp set_db.sh wp_db_1:/home
 docker cp wordpress_dump wp_db_1:/home
 docker exec wp_db_1 ./home/set_db.sh root $DB_NEW_PASS
 
-cp -dr /etc/apache2/sites-available /var/lib/docker/volumes/wp_apache-available/_data
-cp -dr /etc/apache2/sites-enabled  /var/lib/docker/volumes/wp_apache-enabled/_data
-cp -dr /etc/apache2/ssl /var/lib/docker/volumes/wp_apache-ssl/_data
-cp -dr /var/www/wordpress /var/www/html
+#cp -dr /etc/apache2/sites-available/* /var/lib/docker/volumes/wp_apache-available/_data/
+#cp -dr /etc/apache2/sites-enabled/*  /var/lib/docker/volumes/wp_apache-enabled/_data/
+#cp -dr  /var/lib/docker/volumes/wp_apache-ssl/_data
+#cp -aRdfr /var/www/wordpress/* /var/lib/docker/volumes/wp_wordpress-data/_data/
+sed -i -e "s/localhost/db/" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-config.php
 
+docker exec wp_wordpress_1 service apache2 reload
 #mv docker-compose.yml_bak docker-compose.yml

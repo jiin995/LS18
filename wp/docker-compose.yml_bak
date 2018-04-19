@@ -23,9 +23,9 @@ services:
      restart: always
      volumes:
        - wordpress-data:/var/www/html
-       - apache-available:/etc/apache2/sites-available
-       - apache-enabled:/etc/apache2/sites-enabled
-       - apache-ssl:/etc/apache2/ssl
+       - apache-available:/etc/apache2/sites-available:ro
+       - apache-enabled:/etc/apache2/sites-enabled:ro
+       - apache-ssl:/etc/apache2/ssl:ro
      environment:
        WORDPRESS_DB_HOST: db:3306
        WORDPRESS_DB_USER: admin
