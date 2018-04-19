@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #aggiungo info di accesso mysql
-  cp /etc/mysql/mysql.cnf  /etc/mysql/mysql.cnf_bak
+cp /etc/mysql/mysql.cnf  /etc/mysql/mysql.cnf_bak
   echo "[mysqldump]" >> /etc/mysql/mysql.cnf
   echo "user=$1" >> /etc/mysql/mysql.cnf
   echo "password=$2" >> /etc/mysql/mysql.cnf

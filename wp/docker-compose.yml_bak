@@ -9,15 +9,17 @@ services:
      environment:
        MYSQL_ROOT_PASSWORD: i93dd3342248
        MYSQL_DATABASE: wordpress
-       MYSQL_USER: myword
-       MYSQL_PASSWORD: mypass
+       MYSQL_USER: admin
+       MYSQL_PASSWORD: torro!234
 
    wordpress:
+     build: mywordpress/
      depends_on:
        - db
-     image: wordpress:latest
+     image: mywordpress:latest
      ports:
-       - "8000:80"
+       - "80:80"
+       - "443:443"
      restart: always
      volumes:
        - wordpress-data:/var/www/html
@@ -26,8 +28,8 @@ services:
        - apache-ssl:/etc/apache2/ssl
      environment:
        WORDPRESS_DB_HOST: db:3306
-       WORDPRESS_DB_USER: myword
-       WORDPRESS_DB_PASSWORD: mypass
+       WORDPRESS_DB_USER: admin
+       WORDPRESS_DB_PASSWORD: torro!234
 
 volumes:
     dbdata:
