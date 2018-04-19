@@ -1,5 +1,5 @@
 #!/bin/bash
-
+DB_NAME=wordpress
 DB_LOCAL_USER="root"
 DB_LOCAL_PASS="toor"
 #della nuova istanza
@@ -8,8 +8,13 @@ DB_WP_PASS="mypass"
 DB_NEW_PASS="i93dd3342248"
 WP_IP=""
 
+PWD=$(pwd)
+C_DIR_NAME=$(basename "$PWD")
+DB_CONTAINER="$C_DIR_NAME""_db_1"
+WP_CONTAINER="$C_DIR_NAME""_wordpress_1"
+
 #Dump database per portarlo nel container
-#mysqldump -u $DB_LOCAL_USER  --password=$DB_LOCAL_PASS wordpress > wordpress_dump
+#mysqldump -u $DB_LOCAL_USER  --password=$DB_LOCAL_PASS $DB_NAME > dump.sql
 
 #Cambio Pass al DB
 
@@ -36,10 +41,13 @@ docker-compose build
 docker-compose up -d
 sleep 45
 #preparo il container per il restore del dump e faccio il restore
-docker cp set_db.sh wp_db_1:/home
-docker cp wordpress_dump wp_db_1:/home
-docker exec wp_db_1 ./home/set_db.sh root $DB_NEW_PASS
+docker cp set_db.sh $DB_CONTAINER:/home
+docker cp dump.sql $DB_CONTAINER:/home
+docker exec $DB_CONTAINER ./home/set_db.sh root $DB_NEW_PASS $DB_NAME
 
+rm -dr mywordpress/ssl
+rm -dr mywordpress/sites-available
+rm -dr mywordpress/sites-enabled
 #cp -dr /etc/apache2/sites-available/* /var/lib/docker/volumes/wp_apache-available/_data/
 #cp -dr /etc/apache2/sites-enabled/*  /var/lib/docker/volumes/wp_apache-enabled/_data/
 #cp -dr  /var/lib/docker/volumes/wp_apache-ssl/_data
@@ -51,8 +59,5 @@ sed -i -e "s/localhost/db/" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-c
 #tolgo chiamata a funzione che dava fastidio
 sed -i "297d" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php
 
-docker exec wp_wordpress_1 service apache2 reload
+docker exec $WP_CONTAINER service apache2 reload
 #mv docker-compose.yml_bak docker-compose.yml
-
- #cp -dr /home/gprevitera/Scaricati/talon /var/lib/docker/volumes/wp_wordpress-data/_data/wp-content/themes/
- #cp -dr /var/www/wordpress/wp-content/uploads/ /var/lib/docker/volumes/wp_wordpress-data/_data/wp-content/

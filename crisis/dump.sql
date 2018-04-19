@@ -1,0 +1,2 @@
+-- purtroppo l'estrazione non ha funzionato
+-- tocca usare questo https://stackoverflow.com/questions/484750/restoring-mysql-database-from-physical-files

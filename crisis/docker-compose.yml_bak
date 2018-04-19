@@ -8,32 +8,28 @@ services:
      restart: always
      environment:
        MYSQL_ROOT_PASSWORD: i93dd3342248
-       MYSQL_DATABASE: wordpress
-       MYSQL_USER: admin
+       MYSQL_DATABASE: crisis
+       MYSQL_USER: crisis
        MYSQL_PASSWORD: torro!234
 
-   wordpress:
-     build: mywordpress/
+   php:
+     build: myphp/
      depends_on:
        - db
-     image: mywordpress:latest
+     image: myphp:latest
      ports:
        - "80:80"
        - "443:443"
      restart: always
      volumes:
-       - wordpress-data:/var/www/html
+       - http-data:/var/www/html
        - apache-available:/etc/apache2/sites-available:ro
        - apache-enabled:/etc/apache2/sites-enabled:ro
        - apache-ssl:/etc/apache2/ssl:ro
-     environment:
-       WORDPRESS_DB_HOST: db:3306
-       WORDPRESS_DB_USER: admin
-       WORDPRESS_DB_PASSWORD: torro!234
 
 volumes:
     dbdata:
-    wordpress-data:
+    http-data:
     apache-available:
     apache-enabled:
     apache-ssl:
