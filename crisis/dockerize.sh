@@ -34,24 +34,24 @@ cp -dr /etc/apache2/sites-enabled/  mywordpress/
 
 docker-compose build
 docker-compose up -d
-sleep 45
+#sleep 45
 #preparo il container per il restore del dump e faccio il restore
-docker cp set_db.sh wp_db_1:/home
-docker cp wordpress_dump wp_db_1:/home
-docker exec wp_db_1 ./home/set_db.sh root $DB_NEW_PASS
+#docker cp set_db.sh wp_db_1:/home
+#docker cp wordpress_dump wp_db_1:/home
+#docker exec wp_db_1 ./home/set_db.sh root $DB_NEW_PASS
 
 #cp -dr /etc/apache2/sites-available/* /var/lib/docker/volumes/wp_apache-available/_data/
 #cp -dr /etc/apache2/sites-enabled/*  /var/lib/docker/volumes/wp_apache-enabled/_data/
 #cp -dr  /var/lib/docker/volumes/wp_apache-ssl/_data
-mv /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php.bak
-cp -aRdfr /var/www/wordpress/* /var/lib/docker/volumes/wp_wordpress-data/_data/
-mv /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php.bak /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php
-sed -i -e "s/localhost/db/" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-config.php
+#mv /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php.bak
+#cp -aRdfr /var/www/wordpress/* /var/lib/docker/volumes/wp_wordpress-data/_data/
+#mv /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php.bak /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php
+#sed -i -e "s/localhost/db/" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-config.php
 
 #tolgo chiamata a funzione che dava fastidio
-sed -i "297d" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php
+#sed -i "297d" /var/lib/docker/volumes/wp_wordpress-data/_data/wp-settings.php
 
-docker exec wp_wordpress_1 service apache2 reload
+docker exec crisis_wordpress_1 service apache2 reload
 #mv docker-compose.yml_bak docker-compose.yml
 
  #cp -dr /home/gprevitera/Scaricati/talon /var/lib/docker/volumes/wp_wordpress-data/_data/wp-content/themes/

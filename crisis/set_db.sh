@@ -17,7 +17,7 @@ cp /etc/mysql/mysql.cnf  /etc/mysql/mysql.cnf_bak
 
 mysql -e "drop database wordpress;"
 mysql -e "create database wordpress;"
-mysql --database=crisis < /home/mysql_dump.sql
+mysql --database=wordpress < /home/wordpress_dump
 
 rm /home/wordpress_dump
 mv /etc/mysql/mysql.cnf_bak  /etc/mysql/mysql.cnf
